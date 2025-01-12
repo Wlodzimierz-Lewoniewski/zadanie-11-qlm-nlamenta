@@ -15,7 +15,6 @@ def calculate_query_likelihood(doc_tokens, query_tokens, collection_model, lambd
     doc_counter = Counter(doc_tokens)
 
     score = 1
-    print("Dokument tokenized:", doc_tokens)
     for token in query_tokens:
         p_doc = doc_counter[token] / doc_length if doc_length > 0 else 0
         p_coll = collection_model.get(token, 0)
@@ -24,7 +23,6 @@ def calculate_query_likelihood(doc_tokens, query_tokens, collection_model, lambd
         # Mnożenie prawdopodobieństw
         score *= p_smoothed
 
-    print(f"Final score for document: {score:.6f}\n")
     return score
 
 
@@ -43,7 +41,6 @@ def query_likelihood_ranking(n, documents, query, lambda_value=0.5):
     # obliczanie prawdopodobieństw dla każdego dokumentu
     scores = []
     for idx, doc_tokens in enumerate(tokenized_docs):
-        print(f"Processing document {idx}...")
         score = calculate_query_likelihood(doc_tokens, query_tokens, collection_model, lambda_value)
         scores.append((idx, score))
 
@@ -58,7 +55,6 @@ def query_likelihood_ranking(n, documents, query, lambda_value=0.5):
 if __name__ == "__main__":
     n = int(input().strip())
     documents = []
-    print()
     for _ in range(n):
         documents.append(input().strip())
 
